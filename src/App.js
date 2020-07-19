@@ -1,25 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
-
-function App() {
+import ToDoComponent from './ToDoComponent';
+import List from './List';
+import Utilities from './Utilities'
+function App (props) {
+  let propsToDo = props.toDoList || [];
+  let [toDoList, setToDoList] = useState(propsToDo);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <ToDoComponent addToDo={(toDo) => {
+        Utilities.addToDo(toDo, toDoList);
+        setToDoList(toDoList.slice());
+      }} ></ToDoComponent>
+      <List toDoList={toDoList} setListItemDelete={(id) => {
+        Utilities.deleteToDo(id, toDoList);
+        setToDoList(toDoList.slice());
+      }}
+        setListItemDone={(id) => {
+          Utilities.setItemDone(id, toDoList);
+          setToDoList(toDoList.slice());
+        }}></List >
+    </div >
   );
 }
 
